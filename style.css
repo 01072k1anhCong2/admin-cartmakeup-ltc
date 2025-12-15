@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #0b0b0b;
+  color: #fff;
+  padding: 16px;
+}
+
+/* HEADER */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* FILTER */
+.filter {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filter select,
+.filter input,
+.filter button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
+
+.filter select,
+.filter input {
+  background: #1a1a1a;
+  color: white;
+}
+
+.filter button {
+  background: #ffffff;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter button:hover {
+  background: #e5e5e5;
+}
+
+/* TABLE */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #111;
+  min-width: 800px;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #222;
+  vertical-align: top;
+}
+
+th {
+  background: #1c1c1c;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+tr:hover {
+  background: #1f1f1f;
+}
+
+td.message {
+  max-width: 360px;
+  line-height: 1.4;
+}
+
+/* DELETE BUTTON */
+.deleteBtn {
+  background: transparent;
+  border: none;
+  color: #ff4d4f;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.deleteBtn:hover {
+  transform: scale(1.2);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 18px;
+  }
+
+  .filter {
+    gap: 8px;
+  }
+
+  .filter select,
+  .filter input,
+  .filter button {
+    flex: 1 1 100%;
+  }
+}
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+}
+
+.select-wrapper select {
+  padding-left: 36px;
+}

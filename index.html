@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Contact Management</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="admin-header">
+    <h1>
+      <i class="fa-solid fa-envelope-open-text"></i>
+      Contact Management うみくん và ちゃんむ
+    </h1>
+  </div>
+
+  <!-- FILTER -->
+<div class="filter">
+
+  <!-- STATUS -->
+  <div class="select-wrapper">
+    <i class="fa-solid fa-tag"></i>
+    <select id="statusFilter">
+      <option value="all">All Status</option>
+      <option value="new">New</option>
+      <option value="read">Read</option>
+      <option value="replied">Replied</option>
+      <option value="closed">Closed</option>
+    </select>
+  </div>
+
+  <!-- YEAR -->
+  <div class="select-wrapper">
+    <i class="fa-solid fa-calendar"></i>
+    <select id="yearFilter">
+      <option value="all">All Years</option>
+    </select>
+  </div>
+
+  <!-- MONTH -->
+  <div class="select-wrapper">
+    <i class="fa-solid fa-calendar-days"></i>
+    <select id="monthFilter">
+      <option value="all">All Months</option>
+    </select>
+  </div>
+
+  <!-- DAY -->
+  <div class="select-wrapper">
+    <i class="fa-solid fa-calendar-day"></i>
+    <select id="dayFilter">
+      <option value="all">All Days</option>
+    </select>
+  </div>
+
+  <!-- TODAY -->
+  <button id="todayBtn">
+    <i class="fa-solid fa-bolt"></i> Hôm nay
+  </button>
+
+  <!-- SEARCH -->
+  <div class="input-wrapper">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input
+      type="text"
+      id="nameSearch"
+      placeholder="Tìm theo tên..."
+    />
+  </div>
+
+</div>
+
+  <!-- TABLE -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th><i class="fa-solid fa-user"></i> Name</th>
+          <th><i class="fa-solid fa-envelope"></i> Email</th>
+          <th><i class="fa-solid fa-comment"></i> Message</th>
+          <th><i class="fa-solid fa-tag"></i> Status</th>
+          <th><i class="fa-solid fa-clock"></i> Date</th>
+          <th><i class="fa-solid fa-trash"></i></th>
+        </tr>
+      </thead>
+      <tbody id="contactTable"></tbody>
+    </table>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
