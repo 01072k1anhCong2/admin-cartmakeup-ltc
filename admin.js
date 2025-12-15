@@ -91,17 +91,14 @@ function renderTable() {
 
 tr.innerHTML = `
   <td>
-    <i class="fa-solid fa-user"></i>
     ${c.name || ""}
   </td>
 
   <td>
-    <i class="fa-solid fa-envelope"></i>
     ${c.email || ""}
   </td>
 
   <td class="message">
-    <i class="fa-solid fa-comment"></i>
     ${c.message || ""}
   </td>
 
