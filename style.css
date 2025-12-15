@@ -17,10 +17,11 @@ body {
 }
 
 h1 {
-  font-size: 22px;
+  font-size: 30px;
   display: flex;
   align-items: center;
   gap: 8px;
+  
 }
 
 /* ================= FILTER ================= */
@@ -177,6 +178,18 @@ td select {
   .filter > * {
     width: 100%;
   }
+  .filter select,
+.filter input{
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  padding-left:40px;
+  width: 300px;
+  
+
+}
+
 
   .select-wrapper,
   .input-wrapper {
