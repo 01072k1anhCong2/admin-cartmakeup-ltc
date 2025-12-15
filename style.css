@@ -9,10 +9,9 @@ body {
   padding: 16px;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .admin-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -24,7 +23,7 @@ h1 {
   gap: 8px;
 }
 
-/* FILTER */
+/* ================= FILTER ================= */
 .filter {
   display: flex;
   gap: 10px;
@@ -35,16 +34,17 @@ h1 {
 .filter select,
 .filter input,
 .filter button {
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: 8px;
   border: none;
   font-size: 14px;
+  width: 100%;
 }
 
 .filter select,
 .filter input {
   background: #1a1a1a;
-  color: white;
+  color: #fff;
 }
 
 .filter button {
@@ -52,13 +52,37 @@ h1 {
   color: #000;
   font-weight: 600;
   cursor: pointer;
+  width: 100px;
 }
 
 .filter button:hover {
   background: #e5e5e5;
 }
 
-/* TABLE */
+/* icon + input/select */
+.select-wrapper,
+.input-wrapper {
+  position: relative;
+  width: 200px;
+}
+
+.select-wrapper select,
+.input-wrapper input {
+  width: 100%;
+  padding-left: 42px;
+}
+
+.select-wrapper i,
+.input-wrapper i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+}
+
+/* ================= TABLE ================= */
 .table-wrapper {
   overflow-x: auto;
 }
@@ -67,10 +91,11 @@ table {
   width: 100%;
   border-collapse: collapse;
   background: #111;
-  min-width: 800px;
+  min-width: 900px;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   border-bottom: 1px solid #222;
   vertical-align: top;
@@ -86,12 +111,32 @@ tr:hover {
   background: #1f1f1f;
 }
 
-td.message {
-  max-width: 360px;
-  line-height: 1.4;
+/* NAME */
+td:first-child,
+th:first-child {
+  min-width: 160px;
+  font-weight: 600;
 }
 
-/* DELETE BUTTON */
+/* MESSAGE – áp dụng cho MỌI MÀN */
+td.message {
+  max-width: 420px;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* STATUS */
+td select {
+  background: #1a1a1a;
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 8px;
+  border: none;
+}
+
+/* DELETE */
 .deleteBtn {
   background: transparent;
   border: none;
@@ -104,35 +149,70 @@ td.message {
   transform: scale(1.2);
 }
 
-/* RESPONSIVE */
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 18px;
+
+  body {
+    padding: 10px;
   }
 
+  h1 {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  /* FILTER mỗi dòng 1 ô */
   .filter {
     gap: 8px;
   }
 
-  .filter select,
-  .filter input,
-  .filter button {
-    flex: 1 1 100%;
+  .filter > * {
+    width: 100%;
   }
-}
-.select-wrapper {
-  position: relative;
-}
 
-.select-wrapper i {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;
-  pointer-events: none;
-}
+  .select-wrapper,
+  .input-wrapper {
+    width: 100%;
+  }
 
-.select-wrapper select {
-  padding-left: 36px;
+  /* TABLE */
+  table {
+    min-width: 100%;
+    font-size: 13px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+
+  /* NAME dễ đọc hơn */
+  td:first-child,
+  th:first-child {
+    min-width: 140px;
+    font-size: 14px;
+  }
+
+  /* MESSAGE rộng – ưu tiên đọc */
+  td.message {
+    min-width: 260px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  /* Ẩn icon trong header bảng */
+  th i {
+    display: none;
+  }
+
+  /* STATUS */
+  td select {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  /* DELETE */
+  .deleteBtn {
+    font-size: 16px;
+  }
 }

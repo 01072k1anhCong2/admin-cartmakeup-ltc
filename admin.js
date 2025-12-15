@@ -80,71 +80,76 @@ function renderTable() {
     if (yearFilter.value !== "all" && c.year != yearFilter.value) return false;
     if (monthFilter.value !== "all" && c.month != monthFilter.value) return false;
     if (dayFilter.value !== "all" && c.day != dayFilter.value) return false;
-
     if (keyword && !normalizeText(c.name).includes(keyword)) return false;
-
     return true;
   });
 
   filtered.forEach(c => {
     const tr = document.createElement("tr");
 
-tr.innerHTML = `
-  <td>
-    ${c.name || ""}
-  </td>
+    tr.innerHTML = `
+      <td>${c.name || ""}</td>
 
-  <td>
-    ${c.email || ""}
-  </td>
+      <td>${c.email || ""}</td>
 
-  <td class="message">
-    ${c.message || ""}
-  </td>
+      <td class="message">
+        <i class="fa-solid fa-comment"></i> ${c.message || ""}
+      </td>
 
-  <td>
-    <select class="statusSelect" data-id="${c.id}">
-      <option value="new">New</option>
-      <option value="read">Read</option>
-      <option value="replied">Replied</option>
-      <option value="closed">Closed</option>
-    </select>
-  </td>
+      <td>
+        <select class="statusSelect">
+          <option value="new">New</option>
+          <option value="read">Read</option>
+          <option value="replied">Replied</option>
+          <option value="closed">Closed</option>
+        </select>
+      </td>
 
-  <td>
-    <i class="fa-solid fa-calendar-day"></i>
-    ${c.day}/${c.month}/${c.year}
-  </td>
+      <td>
+        <i class="fa-solid fa-calendar-day"></i>
+        ${c.day}/${c.month}/${c.year}
+      </td>
 
-  <td>
-    <button class="deleteBtn" title="Xóa contact">
-      <i class="fa-solid fa-trash"></i>
-    </button>
-  </td>
-`;
+      <td>
+        <button class="deleteBtn" title="Xóa contact">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    `;
 
+    /* ===== STATUS ===== */
+    const statusSelect = tr.querySelector(".statusSelect");
+    const status = c.status || "new";
 
-    // Update status
-tr.querySelector("select").addEventListener("change", (e) => {
-  db.collection("contacts").doc(c.id).update({
-    status: e.target.value,
-  });
-});
+    statusSelect.value = status;
+    statusSelect.classList.add(`status-${status}`);
 
-// Delete contact
-tr.querySelector(".deleteBtn").addEventListener("click", () => {
-  const ok = confirm(`Bạn có chắc muốn xóa contact của "${c.name}" không?`);
-  if (!ok) return;
+    statusSelect.addEventListener("change", (e) => {
+      const newStatus = e.target.value;
 
-  db.collection("contacts").doc(c.id).delete()
-    .catch(err => alert("Xóa thất bại: " + err.message));
-});
+      // Update UI ngay
+      statusSelect.className = "statusSelect";
+      statusSelect.classList.add(`status-${newStatus}`);
 
+      // Update Firestore
+      db.collection("contacts").doc(c.id).update({
+        status: newStatus,
+      });
+    });
 
+    /* ===== DELETE ===== */
+    tr.querySelector(".deleteBtn").addEventListener("click", () => {
+      const ok = confirm(`🗑️ Bạn có chắc muốn xóa contact của "${c.name}" không?`);
+      if (!ok) return;
+
+      db.collection("contacts").doc(c.id).delete()
+        .catch(err => alert("❌ Xóa thất bại: " + err.message));
+    });
 
     tableBody.appendChild(tr);
   });
 }
+
 
 /************* EVENTS *************/
 statusFilter.addEventListener("change", renderTable);
