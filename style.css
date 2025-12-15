@@ -132,8 +132,16 @@ td select {
   background: #1a1a1a;
   color: #fff;
   border-radius: 6px;
-  padding: 6px 8px;
+  padding: 8px 10px;
   border: none;
+
+  height: 36px;              /* 👈 QUAN TRỌNG */
+  line-height: 36px;         /* 👈 chữ luôn ở giữa */
+  font-size: 14px;
+
+  appearance: none;          /* fix browser */
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 /* DELETE */
@@ -214,5 +222,16 @@ td select {
   /* DELETE */
   .deleteBtn {
     font-size: 16px;
+  }
+    td select {
+    height: 50px;
+    line-height: 40px;
+    font-size: 14px;
+    width: 70px;
+  }
+
+  .filter select {
+    height: 44px;
+    line-height: 44px;
   }
 }
