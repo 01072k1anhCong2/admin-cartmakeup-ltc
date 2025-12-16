@@ -10,6 +10,24 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
+
+/************* CHECK AUTH *************/
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    // Chưa đăng nhập -> chuyển về trang login
+    window.location.href = "login.html";
+  }
+});
+
+/************* LOGOUT FUNCTION *************/
+function logout() {
+  if (confirm("Bạn có chắc muốn đăng xuất?")) {
+    auth.signOut().then(() => {
+      window.location.href = "login.html";
+    });
+  }
+}
 
 /************* DOM ELEMENTS *************/
 const tableBody   = document.getElementById("contactTable");
@@ -23,7 +41,7 @@ const nameSearch   = document.getElementById("nameSearch");
 /************* DATA *************/
 let contacts = [];
 
-/************* UTIL: NORMALIZE (BỎ DẤU) *************/
+/************* UTIL: NORMALIZE (Bỏ DẤU) *************/
 function normalizeText(str = "") {
   return str
     .toLowerCase()

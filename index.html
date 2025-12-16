@@ -16,6 +16,7 @@
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
@@ -29,6 +30,10 @@
       <i class="fa-solid fa-envelope-open-text"></i>
       Contact Management
     </h1>
+    
+    <button onclick="logout()" class="logout-btn" title="Đăng xuất">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
   </div>
 
   <!-- FILTER -->
@@ -97,7 +102,7 @@
           <th><i class="fa-solid fa-comment"></i> Message</th>
           <th><i class="fa-solid fa-tag"></i> Status</th>
           <th><i class="fa-solid fa-clock"></i> Date</th>
-          <th><i class="fa-solid fa-trash"></i></th>
+          <th>Liệm</i></th>
         </tr>
       </thead>
       <tbody id="contactTable"></tbody>

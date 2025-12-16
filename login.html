@@ -2,24 +2,376 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Login</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body class="login-page">
-
-  <div class="login-box">
-    <h2>Admin Login</h2>
-
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-
-    <button id="loginBtn">Đăng nhập</button>
-
-    <p id="error"></p>
-  </div>
-
+  <title>Đăng nhập - Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+  
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="auth.js"></script>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #0b0b0b 0%, #1a1a1a 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-box {
+      background: #111;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      border: 1px solid #222;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo img {
+      height: 80px;
+      width: auto;
+      display: none;
+    }
+    
+    .logo img.loaded {
+      display: inline-block;
+    }
+
+    h1 {
+      color: #fff;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      font-size: 16px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #fff;
+      background: #222;
+    }
+    
+    .input-group.error input {
+      border-color: #ff4d4f;
+      background: rgba(255, 77, 79, 0.05);
+    }
+
+    .input-group input::placeholder {
+      color: #666;
+    }
+
+    .error-message {
+      color: #ff4d4f;
+      font-size: 14px;
+      margin-bottom: 20px;
+      text-align: center;
+      min-height: 20px;
+      display: none;
+      background: rgba(255, 77, 79, 0.1);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 77, 79, 0.3);
+      font-weight: 500;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.4s ease;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button[type="submit"]:hover {
+      background: #e5e5e5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0);
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 480px) {
+      .login-box {
+        padding: 30px 24px;
+      }
+      
+      h1 {
+        font-size: 20px;
+      }
+      
+      .logo img {
+        height: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="logo">
+        <img id="logoImg" src="images/cart_footer.png" alt="Cart Makeup Logo" />
+      </div>
+      
+      <h1>
+        <i class="fa-solid fa-lock"></i>
+        Đăng nhập Admin
+      </h1>
+      
+      <form id="loginForm">
+        <div class="input-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            required
+            autocomplete="email"
+          />
+        </div>
+        
+        <div class="input-group">
+          <i class="fa-solid fa-key"></i>
+          <input
+            type="password"
+            id="password"
+            placeholder="Mật khẩu"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <button type="submit" id="loginBtn">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          Đăng nhập
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    /************* FIREBASE CONFIG *************/
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhHEPz4GpWo_3qxV_OXxIefvmbcPSzDyA",
+      authDomain: "cartmakeup-889b7.firebaseapp.com",
+      projectId: "cartmakeup-889b7",
+      storageBucket: "cartmakeup-889b7.firebasestorage.app",
+      messagingSenderId: "118169131860",
+      appId: "1:118169131860:web:8842836f63a9acfa7d46c1",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    /************* LOAD LOGO *************/
+    const logoImg = document.getElementById('logoImg');
+    logoImg.onload = function() {
+      this.classList.add('loaded');
+    };
+    logoImg.onerror = function() {
+      console.log('Logo not found, hiding image');
+    };
+
+    /************* CHECK IF ALREADY LOGGED IN *************/
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log('User already logged in:', user.email);
+        window.location.href = "index.html";
+      } else {
+        console.log('No user logged in');
+      }
+    });
+
+    /************* DOM ELEMENTS *************/
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginBtn = document.getElementById("loginBtn");
+    const errorMessage = document.getElementById("errorMessage");
+
+    /************* LOGIN HANDLER *************/
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      
+      // Validate input
+      if (!email) {
+        showError("Vui lòng nhập email!");
+        return;
+      }
+      
+      if (!password) {
+        showError("Vui lòng nhập mật khẩu!");
+        return;
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showError("Email không đúng định dạng!");
+        return;
+      }
+      
+      console.log('Attempting login with:', email);
+      
+      // Reset error
+      errorMessage.classList.remove("show");
+      errorMessage.textContent = "";
+      
+      // Disable button
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang đăng nhập...';
+      
+      try {
+        // Đăng nhập với Firebase Authentication
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        console.log('Login successful:', userCredential.user.email);
+        
+        // Success -> Firebase sẽ tự chuyển hướng qua onAuthStateChanged
+        
+      } catch (error) {
+        console.error('Login error:', error.code, error.message);
+        
+        // Reset button
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Đăng nhập';
+        
+        // Show appropriate error message
+        let errorText = "Đăng nhập thất bại!";
+        
+        switch (error.code) {
+          case "auth/user-not-found":
+            errorText = "❌ Email không tồn tại trong hệ thống!";
+            break;
+          case "auth/wrong-password":
+            errorText = "❌ Mật khẩu không đúng!";
+            break;
+          case "auth/invalid-email":
+            errorText = "❌ Email không hợp lệ!";
+            break;
+          case "auth/invalid-credential":
+          case "auth/invalid-login-credentials":
+            errorText = "❌ Email hoặc mật khẩu không đúng!";
+            break;
+          case "auth/too-many-requests":
+            errorText = "⚠️ Quá nhiều lần thử sai. Vui lòng thử lại sau vài phút!";
+            break;
+          case "auth/user-disabled":
+            errorText = "❌ Tài khoản đã bị vô hiệu hóa!";
+            break;
+          case "auth/network-request-failed":
+            errorText = "⚠️ Lỗi kết nối mạng. Vui lòng kiểm tra internet!";
+            break;
+          default:
+            errorText = `❌ Lỗi: ${error.message}`;
+        }
+        
+        showError(errorText);
+      }
+    });
+    
+    // Helper function to show error
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add("show");
+      
+      // Add error class to inputs
+      emailInput.parentElement.classList.add('error');
+      passwordInput.parentElement.classList.add('error');
+      
+      // Remove error class when user starts typing
+      emailInput.addEventListener('input', removeErrorClass, { once: true });
+      passwordInput.addEventListener('input', removeErrorClass, { once: true });
+    }
+    
+    function removeErrorClass() {
+      emailInput.parentElement.classList.remove('error');
+      passwordInput.parentElement.classList.remove('error');
+      errorMessage.classList.remove('show');
+    }
+    
+    console.log('Login page loaded successfully');
+  </script>
 </body>
 </html>

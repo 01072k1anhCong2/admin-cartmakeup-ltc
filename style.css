@@ -13,18 +13,76 @@ body {
 .admin-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 20px;
+  gap: 16px;
 }
+
 #cart_logo{
   height: 100px;
   width: auto;
 }
+
 h1 {
   font-size: 30px;
   display: flex;
   align-items: center;
   gap: 8px;
-  
+  flex: 1;
+}
+
+/* ===== NÚT ĐĂNG XUẤT ===== */
+.logout-btn {
+  background: linear-gradient(135deg, #676060 0%, #000000 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(101, 97, 97, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.logout-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.logout-btn:hover::before {
+  left: 100%;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #ff7875 0%, #ffa39e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 77, 79, 0.4);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+}
+
+.logout-btn i {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.logout-btn:hover i {
+  transform: translateX(3px);
 }
 
 /* ================= FILTER ================= */
@@ -139,11 +197,11 @@ td select {
   padding: 8px 10px;
   border: none;
 
-  height: 36px;              /* 👈 QUAN TRỌNG */
-  line-height: 36px;         /* 👈 chữ luôn ở giữa */
+  height: 50px;             
+  line-height: 36px;         
   font-size: 14px;
 
-  appearance: none;          /* fix browser */
+  appearance: none;       
   -webkit-appearance: none;
   -moz-appearance: none;
 }
@@ -168,35 +226,56 @@ td select {
     padding: 10px;
   }
 
+  .admin-header {
+    flex-wrap: wrap;
+  }
+
   h1 {
-    font-size: 30px;
+    font-size: 20px;
     line-height: 1.3;
+    width: 100%;
+  }
+
+  .logout-btn {
+    padding: 5px 15px;
+    font-size: 10px;
+    width: 30%;
+    margin: 0;
+    justify-content: center;
   }
 
   /* FILTER mỗi dòng 1 ô */
   .filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 8px;
   }
 
-  .filter > * {
+  .filter .select-wrapper{
+    width: 30%;
+  }
+
+  .filter .input-wrapper{
     width: 100%;
   }
+
+  .select-wrapper i { 
+    position: absolute;
+    left: 12px;
+    color: #666;
+    pointer-events: none;
+    font-size: 16px
+  }
+
   .filter select,
-.filter input{
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: none;
-  font-size: 14px;
-  padding-left:40px;
-  width: 300px;
-  
-
-}
-
-
-  .select-wrapper,
-  .input-wrapper {
-    width: 100%;
+  .filter input{
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    padding-left:40px;
+    height: 44px;
+    line-height: 44px;
   }
 
   /* TABLE */
@@ -239,15 +318,11 @@ td select {
   .deleteBtn {
     font-size: 16px;
   }
-    td select {
+
+  td select {
     height: 50px;
     line-height: 40px;
     font-size: 14px;
     width: 70px;
-  }
-
-  .filter select {
-    height: 44px;
-    line-height: 44px;
   }
 }
