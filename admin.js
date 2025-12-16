@@ -134,12 +134,9 @@ function renderTable() {
     if (monthFilter.value !== "all" && c.month != monthFilter.value) return false;
     if (dayFilter.value !== "all" && c.day != dayFilter.value) return false;
     if (keyword && !normalizeText(c.name).includes(keyword)) return false;
-    console.log('---',c)
     return true;
   });
   
-  console.log('fui toi',filtered)
-
   filtered.forEach(c => {
     const tr = document.createElement("tr");
 
@@ -149,7 +146,7 @@ function renderTable() {
       <td>${c.email || ""}</td>
 
       <td class="message">
-        <i class="fa-solid fa-comment"></i> ${c.message || ""}
+         ${c.message || ""}
       </td>
 
       <td>
@@ -162,7 +159,6 @@ function renderTable() {
       </td>
 
       <td>
-        <i class="fa-solid fa-calendar-day"></i>
         ${c.day}/${c.month}/${c.year}
       </td>
 
