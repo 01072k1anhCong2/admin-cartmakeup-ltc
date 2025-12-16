@@ -12,19 +12,50 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-/************* CHECK AUTH *************/
+/************* ẨN NỘI DUNG CHO ĐẾN KHI KIỂM TRA AUTH *************/
+document.body.style.opacity = '0';
+document.body.style.visibility = 'hidden';
+
+/************* CHECK AUTH - QUAN TRỌNG *************/
+let isAuthChecked = false;
+
 auth.onAuthStateChanged((user) => {
-  if (!user) {
+  if (!user && !isAuthChecked) {
     // Chưa đăng nhập -> chuyển về trang login
+    console.log('No user detected, redirecting to login...');
     window.location.href = "login.html";
+    return;
+  }
+  
+  if (user) {
+    console.log('User logged in:', user.email);
+    // Đã đăng nhập -> hiện nội dung
+    document.body.style.opacity = '1';
+    document.body.style.visibility = 'visible';
+    isAuthChecked = true;
+    
+    // Load data
+    loadContacts();
   }
 });
+
+// Timeout fallback - nếu sau 3 giây vẫn không có phản hồi từ Firebase
+setTimeout(() => {
+  if (!isAuthChecked) {
+    console.log('Auth check timeout, redirecting to login...');
+    window.location.href = "login.html";
+  }
+}, 3000);
 
 /************* LOGOUT FUNCTION *************/
 function logout() {
   if (confirm("Bạn có chắc muốn đăng xuất?")) {
     auth.signOut().then(() => {
+      console.log('Logged out successfully');
       window.location.href = "login.html";
+    }).catch((error) => {
+      console.error('Logout error:', error);
+      alert("Lỗi khi đăng xuất: " + error.message);
     });
   }
 }
@@ -50,17 +81,21 @@ function normalizeText(str = "") {
 }
 
 /************* LOAD DATA *************/
-db.collection("contacts")
-  .orderBy("createdAt", "desc")
-  .onSnapshot((snapshot) => {
-    contacts = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+function loadContacts() {
+  db.collection("contacts")
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snapshot) => {
+      contacts = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    populateDateFilters();
-    renderTable();
-  });
+      populateDateFilters();
+      renderTable();
+    }, (error) => {
+      console.error("Error loading contacts:", error);
+    });
+}
 
 /************* POPULATE FILTERS *************/
 function populateDateFilters() {
@@ -152,6 +187,9 @@ function renderTable() {
       // Update Firestore
       db.collection("contacts").doc(c.id).update({
         status: newStatus,
+      }).catch(err => {
+        console.error("Update status error:", err);
+        alert("❌ Cập nhật thất bại: " + err.message);
       });
     });
 
@@ -161,7 +199,13 @@ function renderTable() {
       if (!ok) return;
 
       db.collection("contacts").doc(c.id).delete()
-        .catch(err => alert("❌ Xóa thất bại: " + err.message));
+        .then(() => {
+          console.log("Contact deleted:", c.id);
+        })
+        .catch(err => {
+          console.error("Delete error:", err);
+          alert("❌ Xóa thất bại: " + err.message);
+        });
     });
 
     tableBody.appendChild(tr);
