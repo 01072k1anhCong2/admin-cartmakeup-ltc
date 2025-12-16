@@ -134,8 +134,11 @@ function renderTable() {
     if (monthFilter.value !== "all" && c.month != monthFilter.value) return false;
     if (dayFilter.value !== "all" && c.day != dayFilter.value) return false;
     if (keyword && !normalizeText(c.name).includes(keyword)) return false;
+    console.log('---',c)
     return true;
   });
+  
+  console.log('fui toi',filtered)
 
   filtered.forEach(c => {
     const tr = document.createElement("tr");
