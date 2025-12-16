@@ -56,13 +56,13 @@ loginForm.addEventListener("submit", async (e) => {
     
     switch (error.code) {
       case "auth/user-not-found":
-        errorText = "Email không tồn tại!";
+        errorText = "Email không tồn tại rồi kkk !";
         break;
       case "auth/wrong-password":
-        errorText = "Mật khẩu không đúng!";
+        errorText = "Mật khẩu không đúng　rùi kk!";
         break;
       case "auth/invalid-email":
-        errorText = "Email không hợp lệ!";
+        errorText = "Email không hợp lệ kkk!";
         break;
       case "auth/too-many-requests":
         errorText = "Quá nhiều lần thử. Vui lòng thử lại sau!";

@@ -49,7 +49,7 @@ setTimeout(() => {
 
 /************* LOGOUT FUNCTION *************/
 function logout() {
-  if (confirm("Bạn có chắc muốn đăng xuất?")) {
+  if (confirm("うみくん có chắc muốn đăng xuất?")) {
     auth.signOut().then(() => {
       console.log('Logged out successfully');
       window.location.href = "login.html";
